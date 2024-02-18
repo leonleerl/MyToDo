@@ -17,7 +17,7 @@
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.FontWeight="Medium"
         TextElement.FontSize="14"
-        FontFamily="{materialDesign:MaterialDesignFont}"
+        FontFamily="Impact"
         AllowsTransparency="True"
         Height="768"
         Width="1280">
