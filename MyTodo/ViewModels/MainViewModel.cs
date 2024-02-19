@@ -43,7 +43,9 @@ namespace MyTodo.ViewModels
             });
 
         }
-
+        public DelegateCommand<MenuBar> NavigateCommand { get; private set; }
+        public DelegateCommand GoBackCommand { get; private set; }
+        public DelegateCommand GoForwardCommand { get; private set; }
         public void CreateMenuBar()
         {
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "Index", NameSpace = "IndexView" });
@@ -51,13 +53,10 @@ namespace MyTodo.ViewModels
             MenuBars.Add(new MenuBar() { Icon = "NotebookPlus", Title = "Memo", NameSpace = "MemoView" });
             MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "Settings", NameSpace = "SettingsView" });
         }
-        public DelegateCommand<MenuBar> NavigateCommand { get; private set; }
-        public DelegateCommand GoBackCommand { get; private set; }
-        public DelegateCommand GoForwardCommand { get; private set; }
+
 
         private readonly IRegionManager regionManager;
         private IRegionNavigationJournal journal;
-        #region DataBinding
         private ObservableCollection<MenuBar> _menuBars;
 
         public ObservableCollection<MenuBar> MenuBars
@@ -70,6 +69,5 @@ namespace MyTodo.ViewModels
             }
         }
 
-        #endregion
     }
 }
