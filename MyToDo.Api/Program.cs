@@ -1,5 +1,9 @@
+using Arch.EntityFrameworkCore.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using MyToDo.Api.Context;
+using MyToDo.Api.Repository;
+using MyToDo.Api.Service;
+using MyToDo.Api.Service.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +16,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyToDoContext>(configure =>
 {
     configure.UseSqlite(builder.Configuration.GetConnectionString("ToDoConnection"));
-});
+}).AddUnitOfWork<MyToDoContext>()
+.AddCustomRepository<ToDo, ToDoRepository>()
+.AddCustomRepository<Memo, MemoRepository>()
+.AddCustomRepository<User, UserRepository>();
+builder.Services.AddTransient<IToDoService, ToDoService>();
 
 var app = builder.Build();
 

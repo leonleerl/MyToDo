@@ -4,9 +4,9 @@ using MyToDo.Api.Context;
 
 namespace MyToDo.Api.Repository
 {
-    public class ToDoRepository : Repository<ToDo>, IRepository<ToDo>
+    public class UserRepository : Repository<User>, IRepository<User>
     {
-        public ToDoRepository(MyToDoContext dbContext) : base(dbContext)
+        public UserRepository(MyToDoContext dbContext) : base(dbContext)
         {
         }
     }
