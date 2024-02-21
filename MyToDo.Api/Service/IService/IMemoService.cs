@@ -3,7 +3,7 @@ using MyToDo.Shared.Dtos;
 
 namespace MyToDo.Api.Service.IService
 {
-    public interface IToDoService : IBaseService<ToDoDto>
+    public interface IMemoService : IBaseService<MemoDto>
     {
         
     }

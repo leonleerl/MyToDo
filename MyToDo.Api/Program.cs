@@ -1,9 +1,12 @@
 using Arch.EntityFrameworkCore.UnitOfWork;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using MyToDo.Api.Context;
+using MyToDo.Api.Extensions;
 using MyToDo.Api.Repository;
 using MyToDo.Api.Service;
 using MyToDo.Api.Service.IService;
+using MyToDo.Shared.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +24,13 @@ builder.Services.AddDbContext<MyToDoContext>(configure =>
 .AddCustomRepository<Memo, MemoRepository>()
 .AddCustomRepository<User, UserRepository>();
 builder.Services.AddTransient<IToDoService, ToDoService>();
+builder.Services.AddTransient<IMemoService, MemoService>();
+
+var autoMapperProfile = new MapperConfiguration(configure =>
+{
+    configure.AddProfile(new AutoMapperProfile());
+});
+builder.Services.AddSingleton(autoMapperProfile.CreateMapper());
 
 var app = builder.Build();
 

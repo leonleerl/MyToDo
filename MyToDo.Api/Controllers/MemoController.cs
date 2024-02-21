@@ -1,21 +1,18 @@
-﻿using Arch.EntityFrameworkCore.UnitOfWork;
-using Microsoft.AspNetCore.Mvc;
-using MyToDo.Api.Context;
-using MyToDo.Api.Service;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyToDo.Api.Service.IService;
+using MyToDo.Api.Service;
 using MyToDo.Shared.Dtos;
 using MyToDo.Shared.Parameters;
-using System.Formats.Asn1;
 
 namespace MyToDo.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
-    public class ToDoController : Controller
+    public class MemoController : Controller
     {
-        private readonly IToDoService service;
+        private readonly IMemoService service;
 
-        public ToDoController(IToDoService service)
+        public MemoController(IMemoService service)
         {
             this.service = service;
         }
@@ -33,13 +30,13 @@ namespace MyToDo.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ApiResponse> Add([FromBody] ToDoDto model)
+        public async Task<ApiResponse> Add([FromBody] MemoDto model)
         {
             return await service.AddAsync(model);
         }
 
         [HttpPost]
-        public async Task<ApiResponse> Update([FromBody] ToDoDto model)
+        public async Task<ApiResponse> Update([FromBody] MemoDto model)
         {
             return await service.UpdateAsync(model);
         }

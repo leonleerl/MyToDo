@@ -7,23 +7,23 @@ using MyToDo.Shared.Parameters;
 
 namespace MyToDo.Api.Service
 {
-    public class ToDoService : IToDoService
+    public class MemoService : IMemoService
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
 
-        public ToDoService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MemoService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
 
-        public async Task<ApiResponse> AddAsync(ToDoDto model)
+        public async Task<ApiResponse> AddAsync(MemoDto model)
         {
             try
             {
-                ToDo todo = mapper.Map<ToDo>(model);
-                await unitOfWork.GetRepository<ToDo>().InsertAsync(todo);
+                Memo todo = mapper.Map<Memo>(model);
+                await unitOfWork.GetRepository<Memo>().InsertAsync(todo);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, model);
                 return new ApiResponse(false, "添加数据失败");
@@ -38,7 +38,7 @@ namespace MyToDo.Api.Service
         {
             try
             {
-                var repository = unitOfWork.GetRepository<ToDoDto>();
+                var repository = unitOfWork.GetRepository<Memo>();
                 var todo = await repository.GetFirstOrDefaultAsync(predicate: p => p.Id == id);
                 repository.Delete(todo);
                 if (await unitOfWork.SaveChangesAsync() > 0)
@@ -55,9 +55,9 @@ namespace MyToDo.Api.Service
         {
             try
             {
-                var repository = unitOfWork.GetRepository<ToDo>();
+                var repository = unitOfWork.GetRepository<Memo>();
                 var todos = await repository.GetPagedListAsync(
-                    predicate: p => string.IsNullOrWhiteSpace(queryParameter.Search) ? true : p.Title == queryParameter.Search,
+                    predicate: p => string.IsNullOrWhiteSpace(queryParameter.Search) ? true : p.Title.Contains(queryParameter.Search),
                     pageIndex: queryParameter.PageIndex,
                     pageSize: queryParameter.PageSize,
                     orderBy: source => source.OrderByDescending(t => t.CreateDate));
@@ -73,7 +73,7 @@ namespace MyToDo.Api.Service
         {
             try
             {
-                var repository = unitOfWork.GetRepository<ToDo>();
+                var repository = unitOfWork.GetRepository<Memo>();
                 var result = await repository.GetFirstOrDefaultAsync(predicate: p => p.Id == id);
                 if (result != null)
                     return new ApiResponse(true, result);
@@ -86,7 +86,7 @@ namespace MyToDo.Api.Service
             }
         }
 
-        public async Task<ApiResponse> UpdateAsync(ToDoDto model)
+        public async Task<ApiResponse> UpdateAsync(MemoDto model)
         {
             try
             {
@@ -97,14 +97,13 @@ namespace MyToDo.Api.Service
                 //ToDo toDo = mapper.Map<ToDo>(model);
                 //var repository = unitOfWork.GetRepository<ToDoDto>();
                 //ToDo result = await repository.GetFirstOrDefaultAsync(predicate: p => p.Id == toDo.Id);
-                ToDo dbToDo = mapper.Map<ToDo>(model);
-                var repository = unitOfWork.GetRepository<ToDo>();
-                ToDo todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id == dbToDo.Id);
+                Memo dbToDo = mapper.Map<Memo>(model);
+                var repository = unitOfWork.GetRepository<Memo>();
+                Memo todo = await repository.GetFirstOrDefaultAsync(predicate: x => x.Id == dbToDo.Id);
 
                 todo.Title = dbToDo.Title;
                 todo.UpdateDate = DateTime.Now;
                 todo.Content = dbToDo.Content;
-                todo.Status = dbToDo.Status;
                 repository.Update(todo);
                 if (await unitOfWork.SaveChangesAsync() > 0)
                     return new ApiResponse(true, todo);
