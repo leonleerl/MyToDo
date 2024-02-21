@@ -9,8 +9,9 @@ namespace MyToDo.Api.Extensions
     {
         public AutoMapperProfile()
         {
-            CreateMap<ToDoDto, ToDo>();
-            CreateMap<MemoDto, Memo>();
+            CreateMap<ToDo, ToDoDto>().ReverseMap();
+            CreateMap<Memo, MemoDto>().ReverseMap();
+            CreateMap<User, UserDto>().ReverseMap();
         }
     }
 }

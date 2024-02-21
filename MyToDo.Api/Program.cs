@@ -25,6 +25,7 @@ builder.Services.AddDbContext<MyToDoContext>(configure =>
 .AddCustomRepository<User, UserRepository>();
 builder.Services.AddTransient<IToDoService, ToDoService>();
 builder.Services.AddTransient<IMemoService, MemoService>();
+builder.Services.AddTransient<ILoginService, LoginService>();
 
 var autoMapperProfile = new MapperConfiguration(configure =>
 {
